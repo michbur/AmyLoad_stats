@@ -1,18 +1,19 @@
-require(seqinr)
 require(ggplot2)
 require(dplyr)
 require(reshape2)
 
-source("./functions/read_AmyLoad.R")
 
-seqs <- read_AmyLoad("./data")
+load("./data/amyloid_sequences.RData")
 ets <- sapply(seqs, function(i) attr(i, "et"))
 lens <- lengths(seqs)
 
 # density plot
 ggplot(data.frame(len = lens, et = ets), aes(x = len)) +
   geom_density() +
-  facet_wrap(~ et)
+  facet_wrap(~ et) +
+  scale_x_continuous("Number of amino acids") +
+  scale_y_continuous("Density") + 
+  ggtitle("Peptide length density")
 
 
 # amino acid frequency

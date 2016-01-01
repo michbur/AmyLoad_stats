@@ -7,8 +7,8 @@ add_et <- function(x, et)
   })
 
 read_AmyLoad <- function(data_path) {
-  seq_neg <- add_et(read.fasta(paste0(data_path, "/amyloid_neg_full.fasta"), seqtype = "AA"), FALSE)
-  seq_pos <- add_et(read.fasta(paste0(data_path, "/amyloid_pos_full.fasta"), seqtype = "AA"), TRUE)
+  seq_neg <- add_et(read.fasta(paste0(data_path, "/amyloid_neg_full.fasta"), seqtype = "AA"), "Nonamyloid")
+  seq_pos <- add_et(read.fasta(paste0(data_path, "/amyloid_pos_full.fasta"), seqtype = "AA"), "Amyloid")
   c(seq_pos, seq_neg)
 }
 
