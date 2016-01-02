@@ -22,7 +22,7 @@ ds <- list(0,
            0, 1, 2, 3, 
            c(0, 0), c(1, 0), c(0, 1))
 
-ngrams <- pblapply(1L:8, function(i)
+ngrams <- lapply(1L:8, function(i)
   calc_freqs(seq_mat, ns[i], aa, ds[[i]], lens)
 )
 
@@ -30,5 +30,5 @@ ngrams <- pblapply(1L:8, function(i)
 
 save(aa, #names of amino acids
   seqs, # raw sequences
-  ngrams = ngram,
+  ngrams = ngrams,
   file = "./data/amyloid_sequences.RData")
