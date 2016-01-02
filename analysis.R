@@ -4,8 +4,7 @@ require(reshape2)
 
 
 load("./data/amyloid_sequences.RData")
-ets <- sapply(seqs, function(i) attr(i, "et"))
-lens <- lengths(seqs)
+
 
 # density plot
 ggplot(data.frame(len = lens, et = ets), aes(x = len)) +
