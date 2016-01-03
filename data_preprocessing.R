@@ -1,5 +1,7 @@
 require(seqinr)
 require(biogram)
+require(dplyr)
+require(reshape2)
 
 source("./functions/read_AmyLoad.R")
 
@@ -10,7 +12,10 @@ lens <- lengths(seqs)
 aa <- a()[-1]
 
 calc_freqs <- function(seq, n, u, d, lens) {
-  as.matrix(count_ngrams(seq = seq, n = n, u = u, d = d, pos = FALSE, scale = FALSE, threshold = 0))/(lens - n - sum(d) + 1)
+  data.frame(as.matrix(count_ngrams(seq = seq, n = n, u = u, d = d, 
+                                    pos = FALSE, scale = FALSE, threshold = 0))/(lens - n - sum(d) + 1),
+             et = ets, len = lens) %>%
+    melt(variable.name = "ngram", value.name = "freq", id.vars = c("et", "len"))
 }
 
 seq_mat <- list2matrix(seqs)
@@ -30,5 +35,5 @@ ngrams <- lapply(1L:8, function(i)
 
 save(aa, #names of amino acids
   seqs, # raw sequences
-  ngrams = ngrams,
+  ngrams = ngrams, #ngrams
   file = "./data/amyloid_sequences.RData")
