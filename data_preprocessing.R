@@ -37,7 +37,9 @@ ngram_id <- list(n = as.list(ns), d = ds)
 
 
 save(aa, #names of amino acids
-  seqs, # raw sequences
-  ngrams = ngrams, #ngrams
-  ngram_id = ngram_id,
-  file = "./data/amyloid_sequences.RData")
+     seqs, # raw sequences
+     ets,
+     lens,
+     ngrams = ngrams, #ngrams
+     ngram_id = ngram_id,
+     file = "./data/amyloid_sequences.RData")
