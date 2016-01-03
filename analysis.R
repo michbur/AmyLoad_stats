@@ -18,16 +18,22 @@ ggplot(data.frame(len = lens, et = ets), aes(x = len)) +
 # amino acid frequency
 max_length <- 7
 min_length <- 5
-aa_freq <- data.frame(t(sapply(seqs[lens > min_length & lens < max_length], function(single_seq) 
-  as.vector(table(factor(single_seq, levels = a()[-1])))/length(single_seq))))
-colnames(aa_freq) <- a()[-1]
-aa_freq[["et"]] <- ets[lens > min_length & lens < max_length]
+n <- 3
+d <- c(0, 1)
 
-maa_freq <- melt(aa_freq, variable.name = "aa", value.name = "freq")
+id_ngram <- which(sapply(ngram_id[["n"]], function(i) i == n) & sapply(ngram_id[["d"]], function(i) all(i == d)))
 
-agg_freq <- group_by(maa_freq, et, aa) %>%
-  summarise(mfreq = mean(freq))
+chosen_ngram_data <- ngrams[[id_ngram]]
+chosen_ngrams <- levels(chosen_ngram_data[["ngram"]])[1L:20]
 
-ggplot(agg_freq, aes(x = et, y = mfreq, fill = et)) +
+plot_dat <- filter(chosen_ngram_data, ngram %in% chosen_ngrams, len > min_length & len < max_length) %>%
+  group_by(et, len, ngram) %>%
+  summarize(freq = mean(freq))
+
+
+ggplot(plot_dat, aes(x = et, y = freq, fill = et)) +
   geom_bar(stat = "identity", position = "dodge") +
-  facet_wrap(~ aa)
+  facet_wrap(~ ngram) +
+  scale_x_discrete("") +
+  scale_y_continuous("Frequency") + 
+  ggtitle("n-gram frequency")
