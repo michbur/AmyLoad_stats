@@ -124,8 +124,8 @@ shinyServer(function(input, output, session) {
   freq_plot <- reactive({
     dat <- freq_data()
     selected_rows <- as.numeric(input[["freq_table_rows_selected"]])
-    
-    if(length(selected_rows)) {
+
+    if(length(selected_rows) > 0) {
       selected_ngram <- unique(as.character(unlist(dat[selected_rows, "ngram"])))
       plot_dat <- dat[dat[["ngram"]] %in% selected_ngram, ]
       p <- ggplot(plot_dat, aes(x = et, y = freq, fill = et)) +
@@ -138,9 +138,12 @@ shinyServer(function(input, output, session) {
       if(length(selected_ngram) > 1)
         p <- p + facet_wrap(~ ngram) 
     } else {
-      p <- ggplot(data.frame()) + geom_blank() + 
-        theme(panel.background = element_rect(fill = "transparent",colour = "transparent")) + 
-        ggtitle("No n-grams selected")
+      p <- ggplot(dat, aes(x = et, y = freq, fill = et)) + geom_blank() + 
+        ggtitle("No n-grams selected") +
+        scale_x_discrete("") +
+        scale_y_continuous("Frequency") + 
+        scale_fill_discrete("") +
+        my_theme
     }
     p
   })
